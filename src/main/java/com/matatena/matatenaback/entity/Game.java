@@ -1,10 +1,9 @@
 package com.matatena.matatenaback.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,10 +12,18 @@ import lombok.*;
 @Setter
 @Entity
 
+@Table(name = "game")
+
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long host;
-    private Long guest;
+    @ManyToOne
+    @JoinColumn(name = "host_id", nullable = false) // Define la FK para el host
+    private UserEntity host;
+    @ManyToOne
+    @JoinColumn(name = "guest_id", nullable = false) // Define la FK para el guest
+    private UserEntity guest;
+    private LocalDateTime started_at = LocalDateTime.now();
+    private LocalDateTime ended_at;
 }
